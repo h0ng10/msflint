@@ -4,11 +4,10 @@ msflint
 A lint tool for the metasploit framework.
 
 msflint is a static code anlaysis tool to identify potential issues in metasploit modules. msflint is like an advanced
-version of "msftity.rb", but uses abstract source trees (AST) to parse the code. This allows much better code coverage
-and the creation of complex quality checks.
+version of "msftity.rb". Unlike msftidy, which is based on regular expressions, msflint uses abstract source trees (AST) to 
+analyze the code. This allows an easy creation of complex/advanced quality checks.
 
-It is like msftidy.rb on steroids. For example it is possible to easily identify method parameters that are not used
-or empty rescue bodies.
+It is like msftidy.rb on steroids.
 
 The goal of the tool is to automate as much quality checks as possible and allow contributors to write better modules
 that can be reviewed faster by the metasploit team, so that pull requests can be merged faster....and to get me a 
