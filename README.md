@@ -35,18 +35,16 @@ I will implement additional/outstanding checks during the week:
 - msf_calls_nil_check - Check if calls to the framework are checked against nil
 - encoding_method_check - Check that the Rex::Text methods are used for stuff like base64
 
-If you have any ideas for checks, please let mek know.
-
+If you have any ideas for checks, please let me know.
 
 ## Installation/usage
-msflint only requires the 'parser' gem to analyze the source code
+msflint supports bundler and only requires the 'ruby_parser' gem to analyze the source code:
 
 ```
-gem install parser
+bundle install
 ```
 
-The tool can be used like msftidy.rb
-
+Msflint can be used like msftidy.rb:
 
 ```
 ./msflint.rb ../path/to/your/metasploit/modul(s)
