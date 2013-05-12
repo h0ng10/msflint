@@ -1,2 +1,2 @@
 source 'https://rubygems.org'
-gem "ruby_parser", "~> 3.1.3"
+gem "parser", "~> 1.3.1"
