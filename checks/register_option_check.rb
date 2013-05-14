@@ -1,5 +1,3 @@
-require 'pp'
-
 class RegisterOptionCheck < LintWorm::Check
 
 	interesting_nodes :def
