@@ -14,7 +14,7 @@ require 'checks/end_of_line_check'
 require 'checks/name_check'
 require 'checks/function_basics_check'
 require 'checks/ranking_check'
-require 'checks/register_options_check'
+require 'checks/register_option_check'
 require 'checks/request_cgi_check'
 require 'checks/file_open_binary_check'
 require 'checks/unused_parameter_check'
@@ -58,7 +58,7 @@ class MsfLint
 		ast_node_checks << FileOpenBinaryCheck.new
 		ast_node_checks << FunctionBasicsCheck.new
 		ast_node_checks << RankingCheck.new
-		ast_node_checks << RegisterOptionsCheck.new
+		ast_node_checks << RegisterOptionCheck.new
 		ast_node_checks << UnusedParameterCheck.new
 		ast_node_checks << EmptyRescueCheck.new
 		ast_node_checks << RequestCgiCheck.new

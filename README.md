@@ -29,9 +29,9 @@ Currently the following checks are included/working:
 - request_cgi_check - Check if request_cgi uses vars_post and vars_get
 - unused_parameter_check - Check for parameters that are not called/used
 - update_info_check - Various checks (twitter handles, CVE-entries etc., like msftidy)
+- register_option_check - Check for verbose option registration (like not working)
 
 I will implement additional/outstanding checks during the week:
-- register_options_check - Check for verbose option registration (currently not working)
 - msf_calls_nil_check - Check if calls to the framework are checked against nil
 - encoding_method_check - Check that the Rex::Text methods are used for stuff like base64
 
