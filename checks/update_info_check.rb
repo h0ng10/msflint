@@ -1,4 +1,3 @@
-require 'pp'
 class UpdateInfoCheck < LintWorm::Check
 
 	interesting_nodes :super, :class
