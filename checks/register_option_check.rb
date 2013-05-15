@@ -19,7 +19,7 @@ class RegisterOptionCheck < LintWorm::Check
 
 	def check_options(node)
 		node.children[2].children.each do |option|
-			if option.children[2].type.to_s == "str"
+			if not option.children[2].nil? and option.children[2].type.to_s == "str"
 				option_name = option.children[2].children[0].upcase
 
 				if option_name.upcase == "VERBOSE" then
