@@ -1,4 +1,4 @@
-class RequestCgiCheck < LintWorm::Check
+class RequestCgiCheck < MsfLint::Check
 
 	interesting_nodes :send
 
@@ -17,14 +17,14 @@ class RequestCgiCheck < LintWorm::Check
 				end
 
 				if args['method'].nil?
-					add_note(LintWorm::Note::WARNING, "For convenience, please set the 'method' key to 'GET'", node.line)
+					add_note(MsfLint::Note::WARNING, "For convenience, please set the 'method' key to 'GET'", node.line)
 				else
 					if args['method'].upcase == "POST" and args.has_key?('data')
-						add_note(LintWorm::Note::SUGGESTION, "Use 'vars_post' key instead of 'data', unless you're trying to avoid the API escaping your parameter names", node.line)
+						add_note(MsfLint::Note::SUGGESTION, "Use 'vars_post' key instead of 'data', unless you're trying to avoid the API escaping your parameter names", node.line)
 					end
 
 					if args['method'].upcase == "GET" and args.has_key?('data')
-						add_note(LintWorm::Note::SUGGESTION, "Use 'vars_get' key instead of 'data', unless you're trying to avoid the API escaping your parameter names", node.line)
+						add_note(MsfLint::Note::SUGGESTION, "Use 'vars_get' key instead of 'data', unless you're trying to avoid the API escaping your parameter names", node.line)
 					end
 				end
 			end

@@ -1,4 +1,4 @@
-class FileOpenBinaryCheck < LintWorm::Check
+class FileOpenBinaryCheck < MsfLint::Check
 
 	interesting_nodes :send
 
@@ -27,7 +27,7 @@ class FileOpenBinaryCheck < LintWorm::Check
 
 		# Check if the attributes of the open call contain a "b" if not add a warning
 		if not attributes.include?("b") then
-			add_note(LintWorm::Note::WARNING, "File open without binary mode", node.line)
+			add_note(MsfLint::Note::WARNING, "File open without binary mode", node.line)
 		end
 	end
 

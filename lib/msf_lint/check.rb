@@ -1,4 +1,4 @@
-﻿module LintWorm
+﻿module MsfLint
 
 	# A Check class that takes care of checking the AST node
 	class Check

@@ -1,4 +1,4 @@
-class EmptyRescueCheck < LintWorm::Check
+class EmptyRescueCheck < MsfLint::Check
 
 	interesting_nodes :resbody
 
@@ -24,7 +24,7 @@ class EmptyRescueCheck < LintWorm::Check
 
 		if node.children[2].children.size == 0
 
-			add_note(LintWorm::Note::WARNING, "Empty rescue body found.", node.line)
+			add_note(MsfLint::Note::WARNING, "Empty rescue body found.", node.line)
 		end 
 	end
 end

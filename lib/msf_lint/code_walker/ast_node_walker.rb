@@ -1,5 +1,5 @@
 # encoding: utf-8
-module LintWorm::CodeWalker
+module MsfLint::CodeWalker
 
 	# AstNodeWalker
 	# Creates a AST node
@@ -37,7 +37,7 @@ module LintWorm::CodeWalker
 			rescue Exception
 				# TODO: Improve me
      			# raise CodeAnalyzer::AnalyzerException.new("#{filename} looks like it's not a valid Ruby file.  Skipping...")
-				notes << LintWorm::Note.new(LintWorm::Note::ERROR, "Exception when parsing the code", 0) 
+				notes << MsfLint::Note.new(MsfLint::Note::ERROR, "Exception when parsing the code", 0) 
 			end
 		end
 

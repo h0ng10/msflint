@@ -1,5 +1,5 @@
 # encoding: utf-8
-module LintWorm::CodeWalker
+module MsfLint::CodeWalker
 
 	# Base class for a test case.
 	class BaseWalker

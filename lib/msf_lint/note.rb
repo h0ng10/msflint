@@ -1,5 +1,5 @@
 # encoding: utf-8
-module LintWorm
+module MsfLint
 	# A note created by a check.
 	#
 	# it indicates the filenname, line number, severity and a message

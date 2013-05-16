@@ -1,4 +1,4 @@
-class RegisterOptionCheck < LintWorm::Check
+class RegisterOptionCheck < MsfLint::Check
 
 	interesting_nodes :def
 
@@ -23,7 +23,7 @@ class RegisterOptionCheck < LintWorm::Check
 				option_name = option.children[2].children[0].upcase
 
 				if option_name.upcase == "VERBOSE" then
-					add_note(LintWorm::Note::WARNING, "VERBOSE Option is already part of advanced settings, no need to add it manually.", option.children[2].line)
+					add_note(MsfLint::Note::WARNING, "VERBOSE Option is already part of advanced settings, no need to add it manually.", option.children[2].line)
 				end
 			end
 

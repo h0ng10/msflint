@@ -1,4 +1,4 @@
-class RankingCheck < LintWorm::Check
+class RankingCheck < MsfLint::Check
 
 	interesting_nodes :cdecl, :class
 
@@ -32,7 +32,7 @@ class RankingCheck < LintWorm::Check
 		if @module_type == "Msf::Exploit" and node.children[1].to_s == "Rank" then
 			ranking = node.children[2].children[1].to_s
 			if not available_ranks.include?(ranking) then
-				add_note(LintWorm::Note::ERROR, "Invalid ranking. You have '#{ranking}' which is a unknown ranking value", node.line)
+				add_note(MsfLint::Note::ERROR, "Invalid ranking. You have '#{ranking}' which is a unknown ranking value", node.line)
 			end
 
 			@ranking_exists = true
@@ -41,7 +41,7 @@ class RankingCheck < LintWorm::Check
 
 	def check_completed
 		if not @ranking_exists and @module_type == "Msf::Exploit" then
-			add_note(LintWorm::Note::ERROR, "Class of type 'Msf::Exploit' but no ranking found", 0)
+			add_note(MsfLint::Note::ERROR, "Class of type 'Msf::Exploit' but no ranking found", 0)
 		end
 	end
 

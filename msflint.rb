@@ -5,7 +5,7 @@
 $LOAD_PATH << File.dirname(__FILE__) + "/lib" 
 $LOAD_PATH << File.dirname(__FILE__) 
 
-require 'lint_worm'
+require 'msf_lint'
 require 'checks/for_loop_check'
 require 'checks/load_usage_check'
 require 'checks/line_length_check'
@@ -36,7 +36,7 @@ class String
 	end
 end
 
-class MsfLint
+class MsfLintRunner
 
 	def initialize
 
@@ -65,8 +65,8 @@ class MsfLint
 		ast_node_checks << UpdateInfoCheck.new
 		ast_node_checks << NameCheck.new
 
-		line_walker = LintWorm::CodeWalker::LineWalker.new(checks: line_checks)
-		ast_walker = LintWorm::CodeWalker::AstNodeWalker.new(checks: ast_node_checks)
+		line_walker = MsfLint::CodeWalker::LineWalker.new(checks: line_checks)
+		ast_walker = MsfLint::CodeWalker::AstNodeWalker.new(checks: ast_node_checks)
 
 		ruby_file = open(filename, 'rb')
 		content = ruby_file.read(ruby_file.stat.size)
@@ -81,7 +81,7 @@ class MsfLint
 
 		check_notes.each do |note| 
 			case note.severity
-			when LintWorm::Note::ERROR
+			when MsfLint::Note::ERROR
 				puts "#{filename}:#{note.line} - [#{note.severity.red}] #{note.message}"
 			else
 				puts "#{filename}:#{note.line} - [#{note.severity.yellow}] #{note.message}"
@@ -109,7 +109,7 @@ if dirs.length < 1 then
         exit(1)
 end
 
-msflint= MsfLint.new()
+msflint= MsfLintRunner.new()
 
 dirs.each do |directory|
 	file_name = nil

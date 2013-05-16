@@ -1,4 +1,4 @@
-class UpdateInfoCheck < LintWorm::Check
+class UpdateInfoCheck < MsfLint::Check
 
 	interesting_nodes :super, :class
 
@@ -31,7 +31,7 @@ class UpdateInfoCheck < LintWorm::Check
 
 				# Check if we are directly talking to a hash
 				if method_call_node.type.to_s == "hash" then
-					add_note(LintWorm::Note::ERROR, "Call to update_info is missing, hash is passed directly", method_call_node.line)
+					add_note(MsfLint::Note::ERROR, "Call to update_info is missing, hash is passed directly", method_call_node.line)
 					update_info_hash = method_call_node
 				else
 
@@ -43,7 +43,7 @@ class UpdateInfoCheck < LintWorm::Check
 
 				# Hmm, seems like there is no hash, that is superstrange
 				if update_info_hash.nil?
-					add_note(LintWorm::Note::ERROR, "No call to update_info or hash found.", method_call_node.line)	
+					add_note(MsfLint::Note::ERROR, "No call to update_info or hash found.", method_call_node.line)	
 				else
 					# It seems that we really have a hash from update_info
 					# Lets do some checks on it
@@ -63,7 +63,7 @@ class UpdateInfoCheck < LintWorm::Check
 		return if @module_type != "Msf::Exploit"
 		disclosure_node = find_hash_entry(hash_node, "DisclosureDate")
 		if disclosure_node.nil? then
-			add_note(LintWorm::Note::ERROR, "Exploit is missing a disclosure date", hash_node.line)
+			add_note(MsfLint::Note::ERROR, "Exploit is missing a disclosure date", hash_node.line)
 		else
 
 			date = disclosure_node.children[0]
@@ -77,9 +77,9 @@ class UpdateInfoCheck < LintWorm::Check
 					'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 				]
 
-				add_note(LintWorm::Note::ERROR, "Incorrect disclosure month format: #{date}", disclosure_node.line) if months.index(month).nil?
+				add_note(MsfLint::Note::ERROR, "Incorrect disclosure month format: #{date}", disclosure_node.line) if months.index(month).nil?
 			else
-				add_note(LintWorm::Note::ERROR, "Incorrect disclosure date format: #{date}", disclosure_node.line)
+				add_note(MsfLint::Note::ERROR, "Incorrect disclosure date format: #{date}", disclosure_node.line)
 			end
 		end
 	end
@@ -91,7 +91,7 @@ class UpdateInfoCheck < LintWorm::Check
 		badchars = %Q|&<=>|
 		title.each_char do |c|
 			if badchars.include?(c)
-				add_note(LintWorm::Note::ERROR, "'#{c}' is a bad character in module title.", title_node.line)
+				add_note(MsfLint::Note::ERROR, "'#{c}' is a bad character in module title.", title_node.line)
 			end
 		end	
 	end
@@ -107,7 +107,7 @@ class UpdateInfoCheck < LintWorm::Check
 					next
  				elsif %w{pbot}.include?(word)
 				elsif word =~ /^[a-z]+$/
-					add_note(LintWorm::Note::WARNING, "Improper capitalization in module title: '#{word}'", title_node.line)
+					add_note(MsfLint::Note::WARNING, "Improper capitalization in module title: '#{word}'", title_node.line)
 				end
 			end
 	end
@@ -121,29 +121,29 @@ class UpdateInfoCheck < LintWorm::Check
 		name= name_node.children[0]
 
 		if name =~ /stack[[:space:]]+overflow/i and @module_type == "Msf::Exploit" then
-			add_note(LintWorm::Note::WARNING, "Title contains \"stack overflow\" You mean \"stack buffer overflow\"?", title_node.line) 
+			add_note(MsfLint::Note::WARNING, "Title contains \"stack overflow\" You mean \"stack buffer overflow\"?", title_node.line) 
 		end
 
 		if name =~ /stack[[:space:]]+overflow/i and @module_type == "Msf::Auxiliary" then
-			add_note(LintWorm::Note::WARNING, "Title contains \"stack overflow\" You mean \"stack exhaustion\"?", title_node.line) 
+			add_note(MsfLint::Note::WARNING, "Title contains \"stack overflow\" You mean \"stack exhaustion\"?", title_node.line) 
 		end
 
 		# Description next
 		description_node = find_hash_entry(hash_node, "Description")
 
 		if description_node.nil? 
-			add_note(LintWorm::Note::WARNING, "No module description found", hash_node.line)
+			add_note(MsfLint::Note::WARNING, "No module description found", hash_node.line)
 			return
 		end
 
 		# Have we a single node
 		if description_node.type == :str
 			if description_node.children[0] =~ /stack[[:space:]]+overflow/i and @module_type == "Msf::Exploit" then
-				add_note(LintWorm::Note::WARNING, "Description contains \"stack overflow\" You mean \"stack buffer overflow\"?", description_node.line) 
+				add_note(MsfLint::Note::WARNING, "Description contains \"stack overflow\" You mean \"stack buffer overflow\"?", description_node.line) 
 			end
 
 			if description_node.children[0] =~ /stack[[:space:]]+overflow/i and @module_type == "Msf::Auxiliary" then
-				add_note(LintWorm::Note::WARNING, "Description contains \"stack overflow\" You mean \"stack exhaustion\"?", description_node.line) 
+				add_note(MsfLint::Note::WARNING, "Description contains \"stack overflow\" You mean \"stack exhaustion\"?", description_node.line) 
 			end
 
 		# No, we have an multi-line array
@@ -151,11 +151,11 @@ class UpdateInfoCheck < LintWorm::Check
 			description_node.children.each do |child|
 
 				if child.children[0] =~ /stack[[:space:]]+overflow/i and @module_type == "Msf::Exploit" then
-					add_note(LintWorm::Note::WARNING, "Description contains \"stack overflow\" You mean \"stack buffer overflow\"?", child.line) 
+					add_note(MsfLint::Note::WARNING, "Description contains \"stack overflow\" You mean \"stack buffer overflow\"?", child.line) 
 				end
 
 				if child.children[0] =~ /stack[[:space:]]+overflow/i and @module_type == "Msf::Auxiliary" then
-					add_note(LintWorm::Note::WARNING, "Description contains \"stack overflow\" You mean \"stack exhaustion\"?", child.line) 
+					add_note(MsfLint::Note::WARNING, "Description contains \"stack overflow\" You mean \"stack exhaustion\"?", child.line) 
 				end
 			end
 		end
@@ -175,8 +175,8 @@ class UpdateInfoCheck < LintWorm::Check
 		end
 
 		authors.each do |line, author_name|
-			add_note(LintWorm::Note::WARNING, "No Twitter handles, please. Try leaving it in a comment instead", line) if author_name =~ /^@.+$/
-			add_note(LintWorm::Note::WARNING, "Please avoid unicode or non-printable characters in Author", line) if not author_name.ascii_only?
+			add_note(MsfLint::Note::WARNING, "No Twitter handles, please. Try leaving it in a comment instead", line) if author_name =~ /^@.+$/
+			add_note(MsfLint::Note::WARNING, "Please avoid unicode or non-printable characters in Author", line) if not author_name.ascii_only?
 		end
 	end
 
@@ -192,42 +192,42 @@ class UpdateInfoCheck < LintWorm::Check
 				identifier = ref.children[0].children[0]
 				value = ref.children[1].children[0]
 			rescue
-				add_note(LintWorm::Note::ERROR, "Error parsing references which is very strange, plase review manually", ref.line)
+				add_note(MsfLint::Note::ERROR, "Error parsing references which is very strange, plase review manually", ref.line)
 			end
 
 
 			case identifier
 			when 'CVE'
-				add_note(LintWorm::Note::WARNING, "Invalid CVE format: '#{value}'", ref.line) if value !~ /^\d{4}\-\d{4}$/
+				add_note(MsfLint::Note::WARNING, "Invalid CVE format: '#{value}'", ref.line) if value !~ /^\d{4}\-\d{4}$/
 			when 'OSVDB'
-				add_note(LintWorm::Note::WARNING, "Invalid OSVDB format: '#{value}'", ref.line) if value !~ /^\d+$/
+				add_note(MsfLint::Note::WARNING, "Invalid OSVDB format: '#{value}'", ref.line) if value !~ /^\d+$/
 			when 'BID'
-				add_note(LintWorm::Note::WARNING, "Invalid BID format: '#{value}'", ref.line) if value !~ /^\d+$/
+				add_note(MsfLint::Note::WARNING, "Invalid BID format: '#{value}'", ref.line) if value !~ /^\d+$/
 			when 'MSB'
-				add_note(LintWorm::Note::WARNING, "Invalid MSB format: '#{value}'", ref.line) if value !~ /^MS\d+\-\d+$/
+				add_note(MsfLint::Note::WARNING, "Invalid MSB format: '#{value}'", ref.line) if value !~ /^MS\d+\-\d+$/
 			when 'MIL'
-				add_note(LintWorm::Note::WARNING, "milw0rm references are no longer supported", ref.line) if value !~ /^\d+$/
+				add_note(MsfLint::Note::WARNING, "milw0rm references are no longer supported", ref.line) if value !~ /^\d+$/
 			when 'EDB'
-				add_note(LintWorm::Note::WARNING, "Invalid EDB reference: '#{value}'", ref.line) if value !~ /^\d+$/
+				add_note(MsfLint::Note::WARNING, "Invalid EDB reference: '#{value}'", ref.line) if value !~ /^\d+$/
 			when 'WVE'
-				add_note(LintWorm::Note::WARNING, "Invalid WVE reference: '#{value}'", ref.line) if value !~ /^\d+\-\d+$/
+				add_note(MsfLint::Note::WARNING, "Invalid WVE reference: '#{value}'", ref.line) if value !~ /^\d+\-\d+$/
 			when 'US-CERT-VU'
-				add_note(LintWorm::Note::WARNING, "Invalid US-CERT-VU reference '#{value}'", ref.line) if value !~ /^\d+$/
+				add_note(MsfLint::Note::WARNING, "Invalid US-CERT-VU reference '#{value}'", ref.line) if value !~ /^\d+$/
 			when 'URL'
 				if value =~ /^http:\/\/www\.osvdb\.org/
-					add_note(LintWorm::Note::WARNING, "Please use 'OSVDB' for '#{value}'", ref.line) 
+					add_note(MsfLint::Note::WARNING, "Please use 'OSVDB' for '#{value}'", ref.line) 
 				elsif value =~ /^http:\/\/cvedetails\.com\/cve/
-					add_note(LintWorm::Note::WARNING, "Please use 'CVE' for '#{value}'", ref.line) 
+					add_note(MsfLint::Note::WARNING, "Please use 'CVE' for '#{value}'", ref.line) 
 				elsif value =~ /^http:\/\/www\.securityfocus\.com\/bid\//
-					add_note(LintWorm::Note::WARNING, "Please use 'BID' for '#{value}'", ref.line) 
+					add_note(MsfLint::Note::WARNING, "Please use 'BID' for '#{value}'", ref.line) 
 				elsif value =~ /^http:\/\/www\.microsoft\.com\/technet\/security\/bulletin\//
-					add_note(LintWorm::Note::WARNING, "Please use 'MSB' for '#{value}'", ref.line) 
+					add_note(MsfLint::Note::WARNING, "Please use 'MSB' for '#{value}'", ref.line) 
 				elsif value =~ /^http:\/\/www\.exploit\-db\.com\/exploits\//
-					add_note(LintWorm::Note::WARNING, "Please use 'EDB' for '#{value}'", ref.line) 
+					add_note(MsfLint::Note::WARNING, "Please use 'EDB' for '#{value}'", ref.line) 
 				elsif value =~ /^http:\/\/www\.wirelessve\.org\/entries\/show\/WVE\-/
-					add_note(LintWorm::Note::WARNING, "Please use 'WVE' for '#{value}'", ref.line) 
+					add_note(MsfLint::Note::WARNING, "Please use 'WVE' for '#{value}'", ref.line) 
 				elsif value =~ /^http:\/\/www\.kb\.cert\.org\/vuls\/id\//
-					add_note(LintWorm::Note::WARNING, "Please use 'US-CERT-VU' for '#{value}'", ref.line) 
+					add_note(MsfLint::Note::WARNING, "Please use 'US-CERT-VU' for '#{value}'", ref.line) 
 				end
 			end
 		end

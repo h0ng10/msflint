@@ -1,4 +1,4 @@
-class NameCheck < LintWorm::Check
+class NameCheck < MsfLint::Check
 
 	interesting_nodes :def, :lvasgn, :ivasgn
 
@@ -16,7 +16,7 @@ class NameCheck < LintWorm::Check
 
 	def check_name(name, type, line)
 		if name !~ /^[_a-z<>=@\[|+-\/\*`]+[_a-z0-9_<>=~@\[\]]*[=!\?]?$/ then
-			add_note(LintWorm::Note::WARNING, "Bad naming style for #{type}: '#{name}'", line)
+			add_note(MsfLint::Note::WARNING, "Bad naming style for #{type}: '#{name}'", line)
 		end
 	end
 end

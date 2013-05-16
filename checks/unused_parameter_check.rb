@@ -1,4 +1,4 @@
-class UnusedParameterCheck < LintWorm::Check
+class UnusedParameterCheck < MsfLint::Check
 
 	interesting_nodes :def
 
@@ -25,7 +25,7 @@ class UnusedParameterCheck < LintWorm::Check
 			# Check how often a parameter variable was called 
 			@param_names.each do |param_name, param_counter|
 				next if param_name == "opts"	# we ignore 'opts' as it is so common and false positives are possible.
-				add_note(LintWorm::Note::WARNING, "Parameter '#{param_name}' is not used in the method #{method_name}", node.line) if param_counter == 0
+				add_note(MsfLint::Note::WARNING, "Parameter '#{param_name}' is not used in the method #{method_name}", node.line) if param_counter == 0
 			end
 		end
 

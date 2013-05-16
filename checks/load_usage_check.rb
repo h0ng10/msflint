@@ -1,4 +1,4 @@
-class LoadUsageCheck < LintWorm::Check
+class LoadUsageCheck < MsfLint::Check
 
 	interesting_nodes :send
 
