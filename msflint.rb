@@ -6,21 +6,6 @@ $LOAD_PATH << File.dirname(__FILE__) + "/lib"
 $LOAD_PATH << File.dirname(__FILE__) 
 
 require 'msf_lint'
-require 'checks/for_loop_check'
-require 'checks/load_usage_check'
-require 'checks/line_length_check'
-require 'checks/bad_indent_check'
-require 'checks/end_of_line_check'
-require 'checks/name_check'
-require 'checks/function_basics_check'
-require 'checks/ranking_check'
-require 'checks/register_option_check'
-require 'checks/request_cgi_check'
-require 'checks/file_open_binary_check'
-require 'checks/unused_parameter_check'
-require 'checks/global_variable_check'
-require 'checks/update_info_check'
-require 'checks/empty_rescue_check'
 
 class String
 	def red
