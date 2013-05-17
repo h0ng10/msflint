@@ -2,8 +2,7 @@
 
 # msflint by Hans-Martin Muench (h0ng10)
 
-$LOAD_PATH << File.dirname(__FILE__) + "/lib" 
-$LOAD_PATH << File.dirname(__FILE__) 
+$LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
 
 require 'msf_lint'
 
